@@ -1,0 +1,26 @@
+#include "UbidotsMicroESP8266.h"
+#define TOKEN "seu token aqui" // Ubidots TOKEN
+#define WIFISSID "nome da rede wifi" // Wi-Fi SSID
+#define PASSWORD "senha da rede wifi" // WIFI Password
+ 
+Ubidots client(TOKEN);
+ 
+void setup()
+{
+Serial.begin(115200);
+client.wifiConnection(WIFISSID, PASSWORD);
+}
+ 
+void loop()
+{
+amostra_umid = analogRead(0);
+//We will use the map function to map the values read on the analog input range from 0 to 1023, and will be remapped to another range from 0 to 100%.
+ 
+float value1 = map ( amostra_umid, 0, 1023, 0, 100 );
+ 
+client.add("Umidade", value1);
+client.sendAll(true);
+ 
+delay(5000);
+}
+
